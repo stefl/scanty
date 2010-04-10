@@ -8,15 +8,15 @@ configure do
 	Sequel.connect(ENV['DATABASE_URL'] || 'sqlite://blog.db')
 
 	require 'ostruct'
-	Blog = OpenStruct.new(
-		:title => 'a scanty blog',
-		:author => 'John Doe',
+	Blog = OpenStruct.new({
+		:title => 'My Thoughts on Code',
+		:author => 'Mark Sands',
 		:url_base => 'http://localhost:4567/',
-		:admin_password => 'changeme',
+		:admin_password => 'secret',
 		:admin_cookie_key => 'scanty_admin',
 		:admin_cookie_value => '51d6d976913ace58',
 		:disqus_shortname => nil
-	)
+	 })
 end
 
 error do
@@ -89,7 +89,7 @@ get '/auth' do
 end
 
 post '/auth' do
-	set_cookie(Blog.admin_cookie_key, Blog.admin_cookie_value) if params[:password] == Blog.admin_password
+	response.set_cookie(Blog.admin_cookie_key.to_s, Blog.admin_cookie_value) if params[:password] == Blog.admin_password
 	redirect '/'
 end
 
@@ -110,6 +110,14 @@ get '/past/:year/:month/:day/:slug/edit' do
 	post = Post.filter(:slug => params[:slug]).first
 	stop [ 404, "Page not found" ] unless post
 	erb :edit, :locals => { :post => post, :url => post.url }
+end
+
+get '/past/:year/:month/:day/:slug/delete' do
+	auth
+	post = Post.filter(:slug => params[:slug]).first
+	stop [ 404, "Page not found" ] unless post
+	post.destroy
+	redirect '/'
 end
 
 post '/past/:year/:month/:day/:slug/' do

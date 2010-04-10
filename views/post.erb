@@ -6,7 +6,10 @@
 		<%= post.body_html %>
 	</div>
 	<% if admin? %>
-		<div class="edit"><a href="<%= post.url %>edit">edit</a></div>
+		<div class="edit">
+			<a href="<%= post.url %>edit">edit</a> | 
+			<a href="<%= post.url %>delete" onclick="return confirm('Are you sure?');">delete</a>
+			</div>
 	<% end %>
 </div>
 
