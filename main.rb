@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'yaml'
 require 'sinatra'
 
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/vendor/sequel'
@@ -6,17 +7,8 @@ require 'sequel'
 
 configure do
 	Sequel.connect(ENV['DATABASE_URL'] || 'sqlite://blog.db')
-
 	require 'ostruct'
-	Blog = OpenStruct.new({
-		:title => 'My Thoughts on Code',
-		:author => 'Mark Sands',
-		:url_base => 'http://localhost:4567/',
-		:admin_password => 'secret',
-		:admin_cookie_key => 'scanty_admin',
-		:admin_cookie_value => '51d6d976913ace58',
-		:disqus_shortname => nil
-	 })
+	Blog = OpenStruct.new( YAML.load_file('config.yml') );	   
 end
 
 error do
