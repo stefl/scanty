@@ -1,7 +1,9 @@
 require 'rubygems'
 require 'yaml'
 require 'sinatra'
-require 'sinatra/sequel'
+
+$LOAD_PATH.unshift File.dirname(__FILE__) + '/vendor/sequel'
+require 'lib/sinatra/sequel'
 
 configure do
   set :database, (ENV['DATABASE_URL'] || 'sqlite://blog.db')
