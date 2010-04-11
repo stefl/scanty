@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'yaml'
 require 'sinatra'
-require 'sequel'
+require 'sqlite3'
 
 configure do
 	Sequel.connect(ENV['DATABASE_URL'] || 'sqlite://blog.db')
