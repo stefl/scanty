@@ -8,7 +8,13 @@ require 'sequel'
 configure do
 	Sequel.connect(ENV['DATABASE_URL'] || 'sqlite://blog.db')
 	require 'ostruct'
-	Blog = OpenStruct.new( YAML.load_file('config.yml') );	   
+	Blog = OpenStruct.new( 
+    :admin_cookie_key => ENV['admin_cookie_key'],
+    :admin_cookie_value => ENV['admin_cookie_value'],
+    :admin_password => ENV['admin_password'],
+    :author => ENV['author'],
+    :title => ENV['title'],
+  )
 end
 
 error do
