@@ -6,8 +6,6 @@ $LOAD_PATH.unshift File.dirname(__FILE__) + '/vendor/sequel'
 require 'lib/sinatra/sequel'
 
 configure do
-  set :database, (ENV['DATABASE_URL'] || 'sqlite://blog.db')
-
 	require 'ostruct'
 	Blog = OpenStruct.new({
     :admin_cookie_key => ENV['admin_cookie_key'],
