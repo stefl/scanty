@@ -1,10 +1,11 @@
 require 'rubygems'
 require 'yaml'
 require 'sinatra'
-require 'sqlite3'
+require 'sinatra/sequel'
 
 configure do
-	Sequel.connect(ENV['DATABASE_URL'] || 'sqlite://blog.db')
+  set :database, (ENV['DATABASE_URL'] || 'sqlite://blog.db')
+
 	require 'ostruct'
 	Blog = OpenStruct.new({
     :admin_cookie_key => ENV['admin_cookie_key'],
