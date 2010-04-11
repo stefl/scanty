@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'yaml'
 require 'sinatra'
-require 'sinatra/sequel'
 
 configure do
 	require 'ostruct'
@@ -10,7 +9,8 @@ configure do
     :admin_cookie_value => ENV['admin_cookie_value'],
     :admin_password => ENV['admin_password'],
     :author => ENV['author'],
-    :title => ENV['title']
+    :title => ENV['title'],
+    :url_base => ENV['url_base']
   })
 end
 
