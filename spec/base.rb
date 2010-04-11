@@ -1,8 +1,6 @@
 require 'rubygems'
 require 'spec'
-require 'sequel'
-
-Sequel.sqlite
+require 'sinatra/sequel'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
 require 'post'

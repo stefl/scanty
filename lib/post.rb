@@ -4,10 +4,11 @@ require 'sinatra/sequel'
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/../vendor/syntax'
 require 'syntax/convertors/html'
 
-set :database, (ENV['DATABASE_URL'] || 'sqlite://blog.db')
+set :database, ENV['DATABASE_URL'] || 'sqlite://blog.db'
 
 migration "create posts table" do
   database.create_table :posts do
+    primary_key :id
     text :title
     text :body
     text :slug
