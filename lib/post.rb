@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../vendor/maruku/maruku'
+require 'maruku'
 
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/../vendor/syntax'
 require 'syntax/convertors/html'
