@@ -1,12 +1,11 @@
 require 'rubygems'
 require 'yaml'
 require 'sinatra'
-<<<<<<< HEAD
 require 'sinatra/sequel'
 
 CONFIG = File.join( File.dirname(__FILE__), 'config.yml' )
 
-configure do  
+configure do
   require 'ostruct'
 	unless !File.file?(CONFIG)
     Blog = OpenStruct.new( YAML.load_file(CONFIG) )
