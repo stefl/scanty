@@ -3,6 +3,7 @@ require 'maruku'
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/../vendor/syntax'
 require 'syntax/convertors/html'
 
+<<<<<<< HEAD
 set :database, ENV['DATABASE_URL'] || 'sqlite://blog.db'
 
 migration "create posts table" do
@@ -16,6 +17,19 @@ migration "create posts table" do
   end
 end
 
+=======
+migration "create posts table" do
+  database.create_table :posts do
+    primary_key :id
+    text :title
+    text :body
+    text :slug
+    text :tags
+    timestamp :created_at
+  end
+end
+
+>>>>>>> 81e9a99... moved to sinatra/sequel to avoid the BS
 class Post < Sequel::Model
 	def url
 		d = created_at
