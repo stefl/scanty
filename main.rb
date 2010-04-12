@@ -1,13 +1,24 @@
 require 'rubygems'
 require 'yaml'
 require 'sinatra'
+require 'sinatra/sequel'
 
-$LOAD_PATH.unshift File.dirname(__FILE__) + '/vendor/sequel'
-require 'lib/sinatra/sequel'
+CONFIG = File.join( File.dirname(__FILE__), 'config.yml' )
 
 configure do
-	require 'ostruct'
-	Blog = OpenStruct.new( YAML.load_file('config.yml') );	   
+  require 'ostruct'
+	unless !File.file?(CONFIG)
+    Blog = OpenStruct.new( YAML.load_file(CONFIG) )
+  else
+  	Blog = OpenStruct.new({
+      :admin_cookie_key => ENV['admin_cookie_key'],
+      :admin_cookie_value => ENV['admin_cookie_value'],
+      :admin_password => ENV['admin_password'],
+      :author => ENV['author'],
+      :title => ENV['title'],
+      :url_base => ENV['url_base']
+    })
+  end
 end
 
 error do
