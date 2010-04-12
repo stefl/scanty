@@ -2,10 +2,12 @@ require 'rubygems'
 require 'yaml'
 require 'sinatra'
 
+CONFIG = File.join( File.dirname(__FILE__), 'config.yml' )
+
 configure do
   require 'ostruct'
-	unless File.file?('config.yml')
-    Blog = OpenStruct.new( YAML.load_file('config.yml') )
+	unless !File.file?(CONFIG)
+    Blog = OpenStruct.new( YAML.load_file(CONFIG) )
   else
   	Blog = OpenStruct.new({
       :admin_cookie_key => ENV['admin_cookie_key'],
