@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'yaml'
 require 'sinatra'
+require 'sinatra/sequel'
 
 CONFIG = File.join( File.dirname(__FILE__), 'config.yml' )
 

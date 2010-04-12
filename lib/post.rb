@@ -1,5 +1,4 @@
 require 'maruku'
-require 'sinatra/sequel'
 
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/../vendor/syntax'
 require 'syntax/convertors/html'
