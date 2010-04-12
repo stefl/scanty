@@ -1,3 +1,2 @@
 maruku --version '>=0.6.0'
-sqlite3-ruby --version '>=1.2.4'
 sinatra-sequel --version '>=0.9.0'

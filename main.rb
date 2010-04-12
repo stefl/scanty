@@ -3,15 +3,19 @@ require 'yaml'
 require 'sinatra'
 
 configure do
-	require 'ostruct'
-	Blog = OpenStruct.new({
-    :admin_cookie_key => ENV['admin_cookie_key'],
-    :admin_cookie_value => ENV['admin_cookie_value'],
-    :admin_password => ENV['admin_password'],
-    :author => ENV['author'],
-    :title => ENV['title'],
-    :url_base => ENV['url_base']
-  })
+  require 'ostruct'
+	unless File.file?('config.yml')
+    Blog = OpenStruct.new( YAML.load_file('config.yml') )
+  else
+  	Blog = OpenStruct.new({
+      :admin_cookie_key => ENV['admin_cookie_key'],
+      :admin_cookie_value => ENV['admin_cookie_value'],
+      :admin_password => ENV['admin_password'],
+      :author => ENV['author'],
+      :title => ENV['title'],
+      :url_base => ENV['url_base']
+    })
+  end
 end
 
 error do
