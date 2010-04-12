@@ -3,7 +3,7 @@ require 'maruku'
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/../vendor/syntax'
 require 'syntax/convertors/html'
 
-# set :database, ENV['DATABASE_URL'] || 'sqlite://blog.db' || 'mysql://root@localhost/blog'
+set :database, ENV['DATABASE_URL'] || 'sqlite://blog.db'
 
 migration "create posts table" do
   database.create_table :posts do
