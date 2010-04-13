@@ -1,5 +1,5 @@
 require 'maruku'
-
+  
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/../vendor/syntax'
 require 'syntax/convertors/html'
 
@@ -31,7 +31,7 @@ class Post < Sequel::Model
 	end
 
 	def summary
-		@summary ||= body.match(/(.{200}.*?\n)/m)
+		@summary ||= body.match(/(.{600}.*?\n)/m)
 		@summary || body
 	end
 
@@ -40,7 +40,7 @@ class Post < Sequel::Model
 	end
 
 	def more?
-		@more ||= body.match(/.{200}.*?\n(.*)/m)
+		@more ||= body.match(/.{600}.*?\n(.*)/m)
 		@more
 	end
 
