@@ -41,6 +41,10 @@ helpers do
 	def auth
 	  throw(:halt, [401, "Not authorized\n"]) unless admin?
 	end
+	
+	def not_found
+	  throw(:halt, [404, "Page not found\n"])
+  end
 end
 
 layout 'layout'
@@ -54,7 +58,7 @@ end
 
 get '/past/:year/:month/:day/:slug/' do
 	post = Post.filter(:slug => params[:slug]).first
-	throw(:halt, [404, "Page not found\n"]) unless post
+	not_found unless post
 	@title = post.title
 	erb :post, :locals => { :post => post }
 end
@@ -112,14 +116,14 @@ end
 get '/past/:year/:month/:day/:slug/edit' do
 	auth
 	post = Post.filter(:slug => params[:slug]).first
-	throw(:halt, [404, "Page not found\n"]) unless post
+	not_found unless post
 	erb :edit, :locals => { :post => post, :url => post.url }
 end
 
 get '/past/:year/:month/:day/:slug/delete' do
 	auth
 	post = Post.filter(:slug => params[:slug]).first
-	throw(:halt, [404, "Page not found\n"]) unless post
+	not_found unless post
 	post.destroy
 	redirect '/'
 end
@@ -127,7 +131,7 @@ end
 post '/past/:year/:month/:day/:slug/' do
 	auth
 	post = Post.filter(:slug => params[:slug]).first
-	throw(:halt, [404, "Page not found\n"]) unless post
+	not_foundunless post
 	post.title = params[:title]
 	post.tags = params[:tags]
 	post.body = params[:body]
