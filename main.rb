@@ -131,7 +131,7 @@ end
 post '/past/:year/:month/:day/:slug/' do
 	auth
 	post = Post.filter(:slug => params[:slug]).first
-	not_foundunless post
+	not_found unless post
 	post.title = params[:title]
 	post.tags = params[:tags]
 	post.body = params[:body]
