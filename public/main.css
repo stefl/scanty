@@ -281,15 +281,23 @@ pre span.symbol { color: #008B8B; }
 
 /* Edit post */
 
+/* jQuery inline titles */
+form[name=new] input[name=title] { color: rgb(153, 153, 153); font-size:100%; width:300pt; }
+form[name=new] input[name=tags]  { color: rgb(153, 153, 153); font-size:100%; width:300pt; }
+form[name=new] input[name=title].focused { color: rgb(55, 55, 55); font-size:100%; width:300pt; }
+form[name=new] input[name=tags].focused  { color: rgb(55, 55, 55); font-size:100%; width:300pt; }
+
 form[name=edit] input[name=title] {
 	font-size: 100%;
 	width: 300pt;
 }
+
 form[name=edit] input[name=tags] {
 	font-size: 100%;
 	width: 300pt;
 }
-form[name=edit] textarea {
+
+form[name=edit] textarea, form[name=new] textarea {
 	font-size: 100%;
 	width: 50em;
 	height: 25em;

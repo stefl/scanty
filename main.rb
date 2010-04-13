@@ -7,18 +7,20 @@ CONFIG = File.join( File.dirname(__FILE__), 'config.yml' )
 
 configure do
   require 'ostruct'
-	unless !File.file?(CONFIG)
-    Blog = OpenStruct.new( YAML.load_file(CONFIG) )
-  else
-  	Blog = OpenStruct.new({
+  Blog = OpenStruct.new(
+  	unless !File.file?(CONFIG)
+      YAML.load_file(CONFIG)
+    else
+    {
       :admin_cookie_key => ENV['admin_cookie_key'],
       :admin_cookie_value => ENV['admin_cookie_value'],
       :admin_password => ENV['admin_password'],
       :author => ENV['author'],
       :title => ENV['title'],
       :url_base => ENV['url_base']
-    })
-  end
+    }
+    end
+  )
 end
 
 error do
@@ -97,7 +99,7 @@ end
 
 get '/posts/new' do
 	auth
-	erb :edit, :locals => { :post => Post.new, :url => '/posts' }
+	erb :new, :locals => { :post => Post.new, :url => '/posts' }
 end
 
 post '/posts' do
