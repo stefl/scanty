@@ -18,6 +18,7 @@ configure do
       :author => ENV['author'],
       :title => ENV['title'],
       :url_base => ENV['url_base']
+      :disqus_shortname => ENV['disqus_shortname']
     }
     end
   )
