@@ -17,7 +17,7 @@ configure do
       :admin_password => ENV['admin_password'],
       :author => ENV['author'],
       :title => ENV['title'],
-      :url_base => ENV['url_base']
+      :url_base => ENV['url_base'],
       :disqus_shortname => ENV['disqus_shortname']
     }
     end
