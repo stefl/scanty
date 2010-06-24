@@ -1,0 +1,34 @@
+- post = locals[:post]
+#post-805.hentry.p1.post.publish.author-stef.category-blog.category-clore.tag-bakery.tag-british-council.tag-creative-cities.tag-ideas.tag-pilsen.tag-uibpilsen.tag-urban.tag-urban-ideas-bakery.comments-open.pings-open.y2010.m06.d16.h20.slug-plzen
+  %h1.entry-title= post.title
+  .entry-meta
+    %span.meta-prep.meta-prep-author By
+    %span.author.vcard
+      %a.url.fn.n{:href => "http://steflewandowski.com/author/stef/", :title => "View all posts by stef"} stef
+    %span.meta-sep.meta-sep-entry-date |
+    %span.meta-prep.meta-prep-entry-date Published:
+    %span.entry-date
+      %abbr.published{:title => "2010-06-16T20:42:08+0100"} June 16, 2010
+    %span.meta-sep.meta-sep-edit |
+    %span.edit
+      %a{:href => "http://steflewandowski.com/wp-admin/post.php?action=edit&amp;post=805", :title => "Edit post"} Edit
+  / .entry-meta
+  .entry-content
+  .entry-utility
+     = succeed "." do
+      %span.tag-links
+        Tagged
+        - post.tags.split.inject([]) do |tag|
+          = succeed "," do
+            %a{:href => "/tags/#{tag}/", :rel => "tag"}= tag
+    Bookmark the
+    = succeed "." do
+      %a{:href => post.full_url, :title => "Permalink to Plzen"} permalink
+    %a.comment-link{:href => "#respond", :title => "Post a comment"} Post a comment
+    or leave a trackback:
+    = succeed "." do
+      %a.trackback-link{:href => "http://steflewandowski.com/2010/06/plzen/trackback/", :rel => "trackback", :title => "Trackback URL for your post"} Trackback URL
+    %span.edit
+      %a{:href => "http://steflewandowski.com/wp-admin/post.php?action=edit&amp;post=805", :title => "Edit post"} Edit
+  / .entry-utility
+/ .post

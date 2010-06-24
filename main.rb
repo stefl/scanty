@@ -1,7 +1,9 @@
 require 'rubygems'
 require 'yaml'
 require 'sinatra'
-require 'sinatra/sequel'
+require 'haml'
+require 'tilt'
+require 'dm-pager'
 
 CONFIG = File.join( File.dirname(__FILE__), 'config.yml' )
 
@@ -20,6 +22,7 @@ configure do
       :url_base => ENV['url_base'],
       :disqus_shortname => ENV['disqus_shortname']
     }
+    
     end
   )
 end
@@ -53,36 +56,36 @@ layout 'layout'
 ### Public
 
 get '/' do
-	posts = Post.reverse_order(:created_at).limit(10)
-	erb :index, :locals => { :posts => posts }, :layout => false
+	posts = Post.all(:order=>[:published_at.desc], :limit=>10)
+	haml :index, :locals => { :posts => posts }
 end
 
-get '/past/:year/:month/:day/:slug/' do
-	post = Post.filter(:slug => params[:slug]).first
+get '/:year/:month/:slug/' do
+	post = Post.first(:slug => params[:slug])
 	not_found unless post
 	@title = post.title
-	erb :post, :locals => { :post => post }
+	haml :post, :locals => { :post => post }
 end
 
-get '/past/:year/:month/:day/:slug' do
+get '/:year/:month/:slug' do
 	redirect "/past/#{params[:year]}/#{params[:month]}/#{params[:day]}/#{params[:slug]}/", 301
 end
 
-get '/past' do
-	posts = Post.reverse_order(:created_at)
+get '/archive' do
+	posts = Post.all(:order=>[:published_at.desc])
 	@title = "Archive"
-	erb :archive, :locals => { :posts => posts }
+	haml :archive, :locals => { :posts => posts }
 end
 
-get '/past/tags/:tag' do
+get '/tag/:tag' do
 	tag = params[:tag]
-	posts = Post.filter(:tags.like("%#{tag}%")).reverse_order(:created_at).limit(30)
+	posts = Post.all(:tags.like => ("%#{tag}%"), :order=>[:published_at.desc], :limit=>30)
 	@title = "Posts tagged #{tag}"
-	erb :tagged, :locals => { :posts => posts, :tag => tag }
+	haml :tagged, :locals => { :posts => posts, :tag => tag }
 end
 
 get '/feed' do
-	@posts = Post.reverse_order(:created_at).limit(20)
+	@posts = Post.all(:order=>[:published_at.desc], :limit=>20)
 	content_type 'application/atom+xml', :charset => 'utf-8'
 	builder :feed
 end
@@ -94,7 +97,7 @@ end
 ### Admin
 
 get '/auth' do
-	erb :auth
+	haml :auth
 end
 
 post '/auth' do
@@ -104,34 +107,34 @@ end
 
 get '/posts/new' do
 	auth
-	erb :new, :locals => { :post => Post.new, :url => '/posts' }
+	haml :new, :locals => { :post => Post.new, :url => '/posts' }
 end
 
 post '/posts' do
 	auth
-	post = Post.new :title => params[:title], :tags => params[:tags], :body => params[:body], :created_at => Time.now, :slug => Post.make_slug(params[:title])
+	post = Post.new :title => params[:title], :tags => params[:tags], :body => params[:body], :published_at => Time.now, :slug => Post.make_slug(params[:title])
 	post.save
 	redirect post.url
 end
 
-get '/past/:year/:month/:day/:slug/edit' do
+get '/:year/:month/:slug/edit' do
 	auth
-	post = Post.filter(:slug => params[:slug]).first
+	post = Post.first(:slug => params[:slug])
 	not_found unless post
-	erb :edit, :locals => { :post => post, :url => post.url }
+	haml :edit, :locals => { :post => post, :url => post.url }
 end
 
-get '/past/:year/:month/:day/:slug/delete' do
+get '/:year/:month/:slug/delete' do
 	auth
-	post = Post.filter(:slug => params[:slug]).first
+	post = Post.first(:slug => params[:slug])
 	not_found unless post
 	post.destroy
 	redirect '/'
 end
 
-post '/past/:year/:month/:day/:slug/' do
+post '/:year/:month/:slug/' do
 	auth
-	post = Post.filter(:slug => params[:slug]).first
+	post = Post.first(:slug => params[:slug])
 	not_found unless post
 	post.title = params[:title]
 	post.tags = params[:tags]

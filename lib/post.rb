@@ -1,25 +1,36 @@
+require 'rubygems'
 require 'maruku'
-  
+require 'dm-core'
+require 'do_postgres'
+require 'dm-postgres-adapter'
+require 'dm-migrations'
+require 'dm-timestamps'
+require 'haml'
+require 'haml/html'
+
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/../vendor/syntax'
 require 'syntax/convertors/html'
 
-set :database, ENV['DATABASE_URL'] || 'sqlite://blog.db'
+db_conf = ENV['DATABASE_URL'] || 'postgres://postgres:postgres@localhost/stefio'
+STDERR.puts db_conf
 
-migration "create posts table" do
-  database.create_table :posts do
-    primary_key :id
-    text :title
-    text :body
-    text :slug
-    text :tags
-    timestamp :created_at
-  end
-end
+DataMapper.setup(:default, db_conf)
 
-class Post < Sequel::Model
+class Post
+  include DataMapper::Resource
+  
+  property :id, Integer, :key=>true
+  property :title, String, :length=>255
+  property :body, Text
+  property :slug, String, :length=>255
+  property :tags, String
+  property :created_at, DateTime
+  property :published_at, DateTime
+  property :format, String, :default=>"haml"
+  
 	def url
-		d = created_at
-		"/past/#{d.year}/#{d.month}/#{d.day}/#{slug}/"
+		d = published_at
+		"/#{d.year}/#{d.month}/#{slug}/"
 	end
 
 	def full_url
@@ -27,7 +38,13 @@ class Post < Sequel::Model
 	end
 
 	def body_html
-		to_html(body)
+	  case format
+      when "haml"
+        Haml::Engine.new(body).render("post body")
+      when "html"
+        to_html(body)
+    end
+		
 	end
 
 	def summary
@@ -94,3 +111,5 @@ class Post < Sequel::Model
 		[ to_html(show.join("\n\n")), hide.size > 0 ]
 	end
 end
+
+DataMapper.auto_upgrade!

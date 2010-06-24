@@ -6,4 +6,4 @@ set :run, false
 set :environment, ENV['RACK_ENV']
 
 require 'main'
-run Sinatra.application
+run Sinatra::Application
